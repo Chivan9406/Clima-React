@@ -1,14 +1,14 @@
 import axios from 'axios'
-import { z } from 'zod'
+import { number, object, parse, string } from 'valibot'
 
 import type { SearchType } from '../types'
 
-const Weather = z.object({
-  name: z.string(),
-  main: z.object({
-    temp: z.number(),
-    temp_min: z.number(),
-    temp_max: z.number()
+const WeatherSchema = object({
+  name: string(),
+  main: object({
+    temp: number(),
+    temp_min: number(),
+    temp_max: number()
   })
 })
 
@@ -23,7 +23,7 @@ export default function useWeather() {
       const lon = data[0].lon
       const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appId}`
       const { data: weatherResult } = await axios(weatherUrl)
-      const result = Weather.safeParse(weatherResult)
+      const result = parse(WeatherSchema, weatherResult)
       console.log(result)
     } catch (error) {
       console.error(error)
