@@ -33,6 +33,7 @@ function Form({ fetchWeather }: FormProps) {
     }
 
     fetchWeather(search)
+    setAlert('')
   }
 
   return (
